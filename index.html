@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Resonance: Data Sonification Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Space Background Canvas overlay -->
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <header>
+        <h1>COSMIC RESONANCE</h1>
+        <p class="subtitle">Interdisciplinary Data Sonification Portfolio</p>
+    </header>
+
+    <main class="container">
+        <!-- Album Selection State -->
+        <section id="album-selection" class="card-grid">
+            <div class="card earth-card" onclick="selectAlbum('earth')">
+                <div class="card-overlay">
+                    <h2>Earth Album</h2>
+                    <p>Symphony of the Anthropocene</p>
+                    <span class="badge">Click to Explore Regions</span>
+                </div>
+            </div>
+
+            <div class="card space-card locked">
+                <div class="card-overlay">
+                    <h2>Space Album</h2>
+                    <p>Orchestrating Exoplanet Transits</p>
+                    <span class="badge lock-badge">Coming Soon</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Earth Region Selection State (Hidden by default) -->
+        <section id="earth-workspace" class="workspace hidden">
+            <button class="btn-back" onclick="goBackToAlbums()">← Back to Albums</button>
+            
+            <div class="workspace-layout">
+                <div class="region-selector">
+                    <h3>Select a Region to Analyze</h3>
+                    <p class="instruction-text">Click a geographical zone to map its 100-year temperature anomalies directly to musical frequencies.</p>
+                    
+                    <div class="region-buttons">
+                        <button class="btn-region" onclick="sonifyRegion('North America')">North America</button>
+                        <button class="btn-region" onclick="sonifyRegion('Europe')">Europe</button>
+                        <button class="btn-region" onclick="sonifyRegion('Asia')">Asia</button>
+                        <button class="btn-region" onclick="sonifyRegion('Africa')">Africa</button>
+                        <button class="btn-region" onclick="sonifyRegion('South America')">South America</button>
+                    </div>
+                </div>
+
+                <div class="audio-engine-panel">
+                    <div id="status-display">
+                        <div class="idle-state">
+                            <span class="pulse-icon">🌍</span>
+                            <h4>Waiting for Data Input...</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- Dynamic Web Audio Console -->
+                    <div id="playback-controls" class="hidden">
+                        <h4 id="active-region-title">Region: None</h4>
+                        <div class="waveform-container">
+                            <div class="bar animate-bar"></div>
+                            <div class="bar animate-bar"></div>
+                            <div class="bar animate-bar"></div>
+                            <div class="bar animate-bar"></div>
+                        </div>
+                        <p class="data-stream-log" id="data-log">Initializing data mapping script...</p>
+                        <button id="audio-toggle-btn" class="btn-action" onclick="togglePlayback()">Stop Audio Generation</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 • Designed for Academic & Research Portfolios • Powered by Web Audio API</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
