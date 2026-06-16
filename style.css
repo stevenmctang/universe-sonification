@@ -75,19 +75,21 @@ header h1 {
     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s;
 }
 
-/* Premium High-Definition Themed Background Overlays */
-.earth-card { 
-    background: linear-gradient(rgba(0,0,0,0.2), rgba(3,3,12,0.9)), url('https://unsplash.com') no-repeat center center/cover; 
+/* Hardcoded Visual Core Image Rules */
+.card-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    opacity: 0.85;
+    transition: transform 0.5s ease;
 }
 
-.space-card { 
-    background: linear-gradient(rgba(0,0,0,0.2), rgba(3,3,12,0.9)), url('https://unsplash.com') no-repeat center center/cover; 
-}
-
-.card:hover { 
-    transform: translateY(-8px); 
-    box-shadow: 0 12px 30px rgba(0, 242, 254, 0.3); 
-    border-color: var(--neon-blue); 
+.card:hover .card-bg-img {
+    transform: scale(1.05);
 }
 
 .card-overlay { 
@@ -95,6 +97,14 @@ header h1 {
     bottom: 0; 
     width: 100%; 
     padding: 2rem; 
+    background: linear-gradient(transparent, rgba(3, 3, 12, 0.95));
+    z-index: 2;
+}
+
+.card:hover { 
+    transform: translateY(-8px); 
+    box-shadow: 0 12px 30px rgba(0, 242, 254, 0.3); 
+    border-color: var(--neon-blue); 
 }
 
 .card h2 { 
@@ -198,6 +208,7 @@ header h1 {
 .idle-state h4 { color: #718096; margin-top: 1rem; }
 .pulse-icon { font-size: 3rem; display: inline-block; animation: float 3s ease-in-out infinite; }
 
+/* Refined Viewport Layout rules */
 .visual-telemetry-box { 
     width: 100%; 
     max-width: 380px; 
@@ -207,13 +218,31 @@ header h1 {
     border: 2px solid var(--glass-border); 
     position: relative; 
     overflow: hidden; 
-    background-color: #010105; 
+    background-color: #000000; 
 }
 
-#telemetry-canvas { 
+#target-display-img { 
     width: 100%; 
     height: 100%; 
-    display: block; 
+    object-fit: cover;
+    opacity: 0.85;
+}
+
+/* Explicit Red Dot Vector Dot Interface Rules */
+.red-tracker-dot {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: #ff003c;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #ff003c, 0 0 5px #fff;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    transition: top 0.3s linear, left 0.3s linear;
+    z-index: 5;
 }
 
 #region-overlay-label { 
@@ -228,7 +257,8 @@ header h1 {
     border-radius: 4px; 
     color: #fff; 
     letter-spacing: 1px; 
-    pointer-events: none; 
+    pointer-events: none;
+    z-index: 6;
 }
 
 .waveform-container { display: flex; justify-content: center; align-items: flex-end; height: 60px; gap: 6px; margin: 2rem 0; }

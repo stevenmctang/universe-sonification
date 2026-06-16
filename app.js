@@ -9,8 +9,8 @@ const activeTitle = document.getElementById('active-region-title');
 const dataLog = document.getElementById('data-log');
 const idleEmoji = document.getElementById('idle-emoji');
 
-const canvas = document.getElementById('telemetry-canvas');
-const ctx = canvas.getContext('2d');
+const targetDisplayImg = document.getElementById('target-display-img');
+const redDotTracker = document.getElementById('red-dot-tracker');
 const overlayLabel = document.getElementById('region-overlay-label');
 
 let audioCtx = null;
@@ -22,20 +22,34 @@ let animationTick = 0;
 
 const scalePool = [110.00, 130.81, 146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99];
 
+// Premium High-Definition Asset Map Database Routing Array
 const albumData = {
     earth: {
         title: "Earth Album Sub-Regions",
         instruction: "Select a geographic continent vector to process 100-year temperature anomalies.",
         emoji: "🌍",
         themeClass: "earth-theme",
-        targets: ["North America", "Europe", "Asia", "Africa", "South America"]
+        targets: ["North America", "Europe", "Asia", "Africa", "South America"],
+        images: {
+            "North America": "https://unsplash.com",
+            "Europe": "https://unsplash.com",
+            "Asia": "https://unsplash.com",
+            "Africa": "https://unsplash.com",
+            "South America": "https://unsplash.com"
+        }
     },
     space: {
         title: "Space Album Cosmic Fields",
         instruction: "Select an astronomical asset to monitor real-time luminosity indices and exoplanet orbit light curves.",
         emoji: "🌌",
         themeClass: "space-theme",
-        targets: ["Orion Nebula", "Andromeda Galaxy", "Kepler-186 System", "TRAPPIST-1 System"]
+        targets: ["Orion Nebula", "Andromeda Galaxy", "Kepler-186 System", "TRAPPIST-1 System"],
+        images: {
+            "Orion Nebula": "https://unsplash.com",
+            "Andromeda Galaxy": "https://unsplash.com",
+            "Kepler-186 System": "https://unsplash.com",
+            "TRAPPIST-1 System": "https://unsplash.com"
+        }
     }
 };
 
@@ -79,6 +93,9 @@ function sonifyTarget(targetName) {
     playbackControls.classList.remove('hidden');
     activeTitle.innerText = `Active Session: ${activeAlbum.toUpperCase()} // Target: ${targetName}`;
     
+    // Wire the specific image pathway inside the template viewport
+    targetDisplayImg.src = albumData[activeAlbum].images[targetName];
+    
     isPlaying = true;
     animationTick = 0;
 
@@ -92,134 +109,6 @@ function sonifyTarget(targetName) {
     }, 400);
 }
 
-function draw3DScene(album, target, progress, syncedLuminosity, syncedRadius) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    ctx.fillStyle = "rgba(255,255,255,0.05)";
-    for(let i=0; i<15; i++) {
-        let x = (Math.sin(i + target.length) * 0.5 + 0.5) * canvas.width;
-        let y = (Math.cos(i * 3) * 0.5 + 0.5) * canvas.height;
-        ctx.fillRect(x, y, 2, 2);
-    }
-
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
-
-    if (album === 'earth') {
-        let radius = 70;
-        let grad = ctx.createRadialGradient(cx - 20, cy - 20, 10, cx, cy, radius);
-        grad.addColorStop(0, '#4facfe');  
-        grad.addColorStop(0.7, '#001f3f'); 
-        grad.addColorStop(1, '#00020a');   
-        
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-
-        ctx.fillStyle = "rgba(72, 187, 120, 0.4)"; 
-        ctx.beginPath();
-        let rotX = (progress * 3) % radius;
-        ctx.arc(cx - radius/2 + rotX, cy - 10, 25, 0, Math.PI*2);
-        ctx.arc(cx + radius/3 - rotX, cy + 15, 20, 0, Math.PI*2);
-        ctx.fill();
-
-        let laserY = cy - radius + ((progress * 4) % (radius * 2));
-        ctx.strokeStyle = "#00f2fe";
-        ctx.shadowColor = "#00f2fe";
-        ctx.shadowBlur = 10;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(cx - radius - 10, laserY);
-        ctx.lineTo(cx + radius + 10, laserY);
-        ctx.stroke();
-        
-        ctx.beginPath();
-        ctx.arc(cx, laserY, 4, 0, Math.PI*2);
-        ctx.fillStyle = "#ffffff";
-        ctx.fill();
-        
-        ctx.shadowBlur = 0; 
-        overlayLabel.innerText = `LASER SCAN SECTOR: Y-${laserY.toFixed(0)}px`;
-
-    } else if (album === 'space' && target.includes("System")) {
-        let radius = 40;
-        let grad = ctx.createRadialGradient(cx, cy, 2, cx, cy, radius + 20);
-        grad.addColorStop(0, '#fffdf0');
-        grad.addColorStop(0.3, '#ffb900'); 
-        grad.addColorStop(0.7, `rgba(255,69,0,${syncedLuminosity * 0.2})`);
-        grad.addColorStop(1, 'transparent');
-
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius + 20, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-
-        ctx.strokeStyle = "rgba(185, 39, 252, 0.2)";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, 110, 35, 0, 0, Math.PI * 2);
-        ctx.stroke();
-
-        let angle = (progress * 0.15);
-        let px = cx + Math.cos(angle) * 110;
-        let py = cy + Math.sin(angle) * 35;
-
-        ctx.fillStyle = "#3399ff";
-        ctx.beginPath();
-        ctx.arc(px, py, 8, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.strokeStyle = "#b927fc";
-        ctx.shadowColor = "#b927fc";
-        ctx.shadowBlur = 12;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy); 
-        ctx.lineTo(px, py); 
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-
-        overlayLabel.innerText = `LASER AIM TRACKER: [X:${px.toFixed(0)}px, Y:${py.toFixed(0)}px]`;
-
-    } else {
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.rotate(progress * 0.03);
-        
-        let grad = ctx.createRadialGradient(0, 0, 1, 0, 0, 80);
-        grad.addColorStop(0, '#ffffff');
-        grad.addColorStop(0.4, '#b927fc'); 
-        grad.addColorStop(1, 'transparent');
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(0, 0, 80, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = "rgba(0, 242, 254, 0.6)";
-        for (let i = 0; i < 40; i++) {
-            let armAngle = i * 0.2;
-            let dist = i * 2;
-            let ax = Math.cos(armAngle) * dist;
-            let ay = Math.sin(armAngle) * dist;
-            ctx.fillRect(ax, ay, 3, 3);
-            ctx.fillRect(-ax, -ay, 3, 3);
-        }
-        ctx.restore();
-
-        ctx.strokeStyle = "rgba(0, 242, 254, 0.6)";
-        ctx.shadowColor = "#00f2fe";
-        ctx.shadowBlur = 8;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(cx, cy, syncedRadius, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-        
-        overlayLabel.innerText = `RADAR LOCK RADIAL: R-${syncedRadius.toFixed(0)}px`;
-    }
-}
-
 function runEarthLogic(tick, region) {
     const years = 1926 + (tick % 101);
     const customRates = { 'North America': 0.022, 'Europe': 0.028, 'Asia': 0.019, 'Africa': 0.012, 'South America': 0.015 };
@@ -228,25 +117,35 @@ function runEarthLogic(tick, region) {
     const anomaly = (tick % 101) * rate + (Math.random() * 0.12 - 0.06);
     let index = Math.floor(((anomaly + 0.5) / 3.0) * scalePool.length);
     index = Math.max(0, Math.min(index, scalePool.length - 1));
-    
-    draw3DScene('earth', region, tick, 1.0, 0);
+    const frequency = scalePool[index];
 
-    dataLog.innerText = `[Timeline: Year ${years}]\nGeospatial Metric: +${anomaly.toFixed(3)}°C Anomaly\nStatus: Tracking surface warming data arrays.\nMapped Output Note: ${scalePool[index]} Hz`;
-    playSynth(scalePool[index], 'triangle', 0.25);
+    // Single Red Tracker Dot math path: Sweeps clean across the Y-Axis matrix map
+    const yPercent = (tick % 101);
+    redDotTracker.style.left = "50%"; // Centered horizontally
+    redDotTracker.style.top = `${yPercent}%`;
+    overlayLabel.innerText = `TRACKER SECTOR FEED: Y-${yPercent}%`;
+
+    dataLog.innerText = `[Timeline: Year ${years}]\nGeospatial Metric: +${anomaly.toFixed(3)}°C Anomaly\nStatus: Tracking surface warming data arrays.\nMapped Output Note: ${frequency} Hz`;
+    playSynth(frequency, 'triangle', 0.25);
 }
-
-let staticRadius = 40;
 
 function runSpaceLogic(tick, celestialObject) {
     let luminosity = 1.0; 
     let waveType = 'sine';
     let statusText = '';
+    
+    // Coordinate vectors for tracker anchoring
+    let dotX = 50;
+    let dotY = 50;
 
     if (celestialObject.includes("System")) {
-        let angle = (tick * 0.15);
-        let px = (canvas.width / 2) + Math.cos(angle) * 110;
-        const isTransit = (px > canvas.width / 2 - 25 && px < canvas.width / 2 + 25 && Math.sin(angle) < 0);
-        
+        // Orbit simulation vector mapping coordinates for the dot tracker path
+        const angle = (tick * 0.2);
+        dotX = 50 + Math.cos(angle) * 35;
+        dotY = 50 + Math.sin(angle) * 15;
+
+        // Transit frame calculation checks
+        const isTransit = (dotX > 40 && dotX < 60 && Math.sin(angle) < 0);
         if (isTransit) {
             luminosity = 0.55; 
             waveType = 'sawtooth';
@@ -255,25 +154,30 @@ function runSpaceLogic(tick, celestialObject) {
             luminosity = 1.0;
             statusText = `Telemetry: Stellar luminosity flux index tracking nominal.`;
         }
+        overlayLabel.innerText = `TRACKER COORDINATE LOCK: X-${dotX.toFixed(0)}% | Y-${dotY.toFixed(0)}%`;
     } else {
+        // Waves oscillation algorithm math mapping for Galaxies/Nebulas
         const waveLoopFactor = 0.8 + Math.sin(tick * 0.4) * 0.3; 
         luminosity = waveLoopFactor;
         statusText = `Spectral Analysis: Tracking multi-band interstellar baseline radiation loops.`;
+        
+        // Single red tracking dot moves fluidly along the sine path to match numbers
+        dotX = 50 + Math.sin(tick * 0.4) * 40;
+        dotY = 50 + Math.cos(tick * 0.4) * 20;
+        overlayLabel.innerText = `TRACKER FREQUENCY VECTOR: X-${dotX.toFixed(0)}%`;
     }
 
     let index = Math.floor(luminosity * (scalePool.length / 2) + 3);
     index = Math.max(0, Math.min(index, scalePool.length - 1));
     const frequency = scalePool[index];
-    
-    // Compute locked alignment coordinates
-    staticRadius = 30 + ((luminosity - 0.5) / 0.6) * 70;
-    
-    draw3DScene('space', celestialObject, tick, luminosity, staticRadius);
-    
+
+    // Assign calculated metrics directly onto tracking style arrays
+    redDotTracker.style.left = `${dotX}%`;
+    redDotTracker.style.top = `${dotY}%`;
+
     dataLog.innerText = `[Sample Quantum Node Index: ${tick}]\nRelative Radiance Flux: ${luminosity.toFixed(4)} L☉\n${statusText}\nMapped Output Note: ${frequency} Hz`;
     playSynth(frequency, waveType, 0.3);
 }
-
 function playSynth(freq, type, duration) {
     if (!audioCtx) return;
     const osc = audioCtx.createOscillator();

@@ -17,9 +17,10 @@
     </header>
 
     <main class="container">
-        <!-- Upgraded Themed Album Selection State Links -->
+        <!-- Upgraded High-Definition Album Cards -->
         <section id="album-selection" class="card-grid">
-            <div class="card earth-card" onclick="selectAlbum('earth')">
+            <div class="card" onclick="selectAlbum('earth')">
+                <img class="card-bg-img" src="https://unsplash.com" alt="Planet Earth from Space">
                 <div class="card-overlay">
                     <h2>Earth Album</h2>
                     <p>Symphony of the Anthropocene</p>
@@ -27,7 +28,8 @@
                 </div>
             </div>
 
-            <div class="card space-card" onclick="selectAlbum('space')">
+            <div class="card" onclick="selectAlbum('space')">
+                <img class="card-bg-img" src="https://unsplash.com" alt="Deep Space Nebula and Galaxies">
                 <div class="card-overlay">
                     <h2>Space Album</h2>
                     <p>Orchestrating Exoplanet Transits & Luminosity</p>
@@ -36,7 +38,7 @@
             </div>
         </section>
 
-        <!-- Shared Workspace Panel Console -->
+        <!-- Main Workspace Frame Layout -->
         <section id="workspace-panel" class="workspace hidden">
             <button class="btn-back" onclick="goBackToAlbums()">← Back to Albums</button>
             
@@ -58,8 +60,11 @@
                     <div id="playback-controls" class="hidden">
                         <h4 id="active-region-title">Active Stream: None</h4>
                         
+                        <!-- Fixed Visual Telemetry Frame containing individual layers -->
                         <div class="visual-telemetry-box">
-                            <canvas id="telemetry-canvas" width="380" height="220"></canvas>
+                            <img id="target-display-img" src="" alt="Active Target Celestial Body Layer">
+                            <!-- The single red dot tracker component requested -->
+                            <div id="red-dot-tracker" class="red-tracker-dot"></div>
                             <div id="region-overlay-label">TELEMETRY TRACKER: ACTIVE</div>
                         </div>
 
