@@ -22,7 +22,7 @@ let animationTick = 0;
 
 const scalePool = [110.00, 130.81, 146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99];
 
-// Premium High-Definition Asset Map Database Routing Array
+// 100% Secure Base64 Inline Graphic Models Database
 const albumData = {
     earth: {
         title: "Earth Album Sub-Regions",
@@ -31,11 +31,11 @@ const albumData = {
         themeClass: "earth-theme",
         targets: ["North America", "Europe", "Asia", "Africa", "South America"],
         images: {
-            "North America": "https://unsplash.com",
-            "Europe": "https://unsplash.com",
-            "Asia": "https://unsplash.com",
-            "Africa": "https://unsplash.com",
-            "South America": "https://unsplash.com"
+            "North America": "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='380' height='220'><rect width='100%' height='100%' fill='%2305101a'/><circle cx='190' cy='110' r='80' fill='%231a5fb4'/><path d='M150 70 Q190 50 210 90 T250 130 Z' fill='%232ec27e'/><text x='20' y='40' fill='%23fff' font-family='sans-serif'>NORTH AMERICA SECTOR</text></svg>",
+            "Europe": "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='380' height='220'><rect width='100%' height='100%' fill='%2305101a'/><circle cx='190' cy='110' r='80' fill='%231a5fb4'/><path d='M170 80 Q200 60 230 90 T220 140 Z' fill='%232ec27e'/><text x='20' y='40' fill='%23fff' font-family='sans-serif'>EUROPE SECTOR</text></svg>",
+            "Asia": "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='380' height='220'><rect width='100%' height='100%' fill='%2305101a'/><circle cx='190' cy='110' r='80' fill='%231a5fb4'/><path d='M180 60 Q240 80 250 120 T190 150 Z' fill='%232ec27e'/><text x='20' y='40' fill='%23fff' font-family='sans-serif'>ASIA SECTOR</text></svg>",
+            "Africa": "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='380' height='220'><rect width='100%' height='100%' fill='%2305101a'/><circle cx='190' cy='110' r='80' fill='%231a5fb4'/><path d='M160 90 Q190 130 220 110 T200 160 Z' fill='%232ec27e'/><text x='20' y='40' fill='%23fff' font-family='sans-serif'>AFRICA SECTOR</text></svg>",
+            "South America": "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='380' height='220'><rect width='100%' height='100%' fill='%2305101a'/><circle cx='190' cy='110' r='80' fill='%231a5fb4'/><path d='M160 80 Q190 110 180 150 T210 140 Z' fill='%232ec27e'/><text x='20' y='40' fill='%23fff' font-family='sans-serif'>SOUTH AMERICA SECTOR</text></svg>"
         }
     },
     space: {
@@ -45,10 +45,10 @@ const albumData = {
         themeClass: "space-theme",
         targets: ["Orion Nebula", "Andromeda Galaxy", "Kepler-186 System", "TRAPPIST-1 System"],
         images: {
-            "Orion Nebula": "https://unsplash.com",
-            "Andromeda Galaxy": "https://unsplash.com",
-            "Kepler-186 System": "https://unsplash.com",
-            "TRAPPIST-1 System": "https://unsplash.com"
+            "Orion Nebula": "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='380' height='220'><rect width='100%' height='100%' fill='%2302020a'/><radialGradient id='o'><stop offset='0%25' stop-color='%23ff00ff'/><stop offset='60%25' stop-color='%23330066'/><stop offset='100%25' stop-color='transparent'/></radialGradient><circle cx='190' cy='110' r='90' fill='url(%23o)'/><circle cx='160' cy='90' r='3' fill='%23fff'/><circle cx='220' cy='130' r='4' fill='%23fff'/><text x='20' y='40' fill='%23fff' font-family='sans-serif'>ORION NEBULA</text></svg>",
+            "Andromeda Galaxy": "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='380' height='220'><rect width='100%' height='100%' fill='%2302020a'/><ellipse cx='190' cy='110' rx='110' ry='40' fill='%23b927fc' opacity='0.6' transform='rotate(-15 190 110)'/><ellipse cx='190' cy='110' rx='40' ry='15' fill='%23ffffff' transform='rotate(-15 190 110)'/><text x='20' y='40' fill='%23fff' font-family='sans-serif'>ANDROMEDA GALAXY (M31)</text></svg>",
+            "Kepler-186 System": "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='380' height='220'><rect width='100%' height='100%' fill='%2302020a'/><circle cx='190' cy='110' r='25' fill='%23ffaa00'/><ellipse cx='190' cy='110' rx='120' ry='30' fill='none' stroke='%23333' stroke-width='1'/><text x='20' y='40' fill='%23fff' font-family='sans-serif'>KEPLER-186 SYSTEM</text></svg>",
+            "TRAPPIST-1 System": "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='380' height='220'><rect width='100%' height='100%' fill='%2302020a'/><circle cx='190' cy='110' r='20' fill='%23ff3300'/><ellipse cx='190' cy='110' rx='100' ry='25' fill='none' stroke='%23333' stroke-width='1'/><text x='20' y='40' fill='%23fff' font-family='sans-serif'>TRAPPIST-1 SYSTEM</text></svg>"
         }
     }
 };
@@ -93,7 +93,6 @@ function sonifyTarget(targetName) {
     playbackControls.classList.remove('hidden');
     activeTitle.innerText = `Active Session: ${activeAlbum.toUpperCase()} // Target: ${targetName}`;
     
-    // Wire the specific image pathway inside the template viewport
     targetDisplayImg.src = albumData[activeAlbum].images[targetName];
     
     isPlaying = true;
@@ -119,11 +118,10 @@ function runEarthLogic(tick, region) {
     index = Math.max(0, Math.min(index, scalePool.length - 1));
     const frequency = scalePool[index];
 
-    // Single Red Tracker Dot math path: Sweeps clean across the Y-Axis matrix map
     const yPercent = (tick % 101);
-    redDotTracker.style.left = "50%"; // Centered horizontally
+    redDotTracker.style.left = "50%"; 
     redDotTracker.style.top = `${yPercent}%`;
-    overlayLabel.innerText = `TRACKER SECTOR FEED: Y-${yPercent}%`;
+    overlayLabel.innerText = `TRACKER FEED: Y-${yPercent}%`;
 
     dataLog.innerText = `[Timeline: Year ${years}]\nGeospatial Metric: +${anomaly.toFixed(3)}°C Anomaly\nStatus: Tracking surface warming data arrays.\nMapped Output Note: ${frequency} Hz`;
     playSynth(frequency, 'triangle', 0.25);
@@ -134,18 +132,15 @@ function runSpaceLogic(tick, celestialObject) {
     let waveType = 'sine';
     let statusText = '';
     
-    // Coordinate vectors for tracker anchoring
     let dotX = 50;
     let dotY = 50;
 
     if (celestialObject.includes("System")) {
-        // Orbit simulation vector mapping coordinates for the dot tracker path
         const angle = (tick * 0.2);
         dotX = 50 + Math.cos(angle) * 35;
-        dotY = 50 + Math.sin(angle) * 15;
+        dotY = 50 + Math.sin(angle) * 10;
 
-        // Transit frame calculation checks
-        const isTransit = (dotX > 40 && dotX < 60 && Math.sin(angle) < 0);
+        const isTransit = (dotX > 43 && dotX < 57 && Math.sin(angle) < 0);
         if (isTransit) {
             luminosity = 0.55; 
             waveType = 'sawtooth';
@@ -154,24 +149,21 @@ function runSpaceLogic(tick, celestialObject) {
             luminosity = 1.0;
             statusText = `Telemetry: Stellar luminosity flux index tracking nominal.`;
         }
-        overlayLabel.innerText = `TRACKER COORDINATE LOCK: X-${dotX.toFixed(0)}% | Y-${dotY.toFixed(0)}%`;
+        overlayLabel.innerText = `TRACKER LOCK: X-${dotX.toFixed(0)}% | Y-${dotY.toFixed(0)}%`;
     } else {
-        // Waves oscillation algorithm math mapping for Galaxies/Nebulas
         const waveLoopFactor = 0.8 + Math.sin(tick * 0.4) * 0.3; 
         luminosity = waveLoopFactor;
         statusText = `Spectral Analysis: Tracking multi-band interstellar baseline radiation loops.`;
         
-        // Single red tracking dot moves fluidly along the sine path to match numbers
         dotX = 50 + Math.sin(tick * 0.4) * 40;
-        dotY = 50 + Math.cos(tick * 0.4) * 20;
-        overlayLabel.innerText = `TRACKER FREQUENCY VECTOR: X-${dotX.toFixed(0)}%`;
+        dotY = 50;
+        overlayLabel.innerText = `TRACKER POSITION: X-${dotX.toFixed(0)}%`;
     }
 
     let index = Math.floor(luminosity * (scalePool.length / 2) + 3);
     index = Math.max(0, Math.min(index, scalePool.length - 1));
     const frequency = scalePool[index];
 
-    // Assign calculated metrics directly onto tracking style arrays
     redDotTracker.style.left = `${dotX}%`;
     redDotTracker.style.top = `${dotY}%`;
 

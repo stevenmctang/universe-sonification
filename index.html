@@ -13,29 +13,14 @@
 
     <header>
         <h1>COSMIC RESONANCE</h1>
-        <p class="subtitle">Interdisciplinary Data Sonification Portfolio</p>
+        <p class="subtitle">Interdisciplinary Data Sonification Portal</p>
     </header>
 
     <main class="container">
-        <!-- Structural Album Grid with Embedded Native Vectors -->
+        <!-- Permanent Inline Graphic Album Cards -->
         <section id="album-selection" class="card-grid">
             <div class="card" onclick="selectAlbum('earth')">
-                <div class="vector-art-frame">
-                    <!-- Procedural Vector Earth Artwork Layer -->
-                    <svg viewBox="0 0 100 100" xmlns="http://w3.org">
-                        <defs>
-                            <radialGradient id="earthGlow" cx="40%" cy="40%" r="60%">
-                                <stop offset="0%" stop-color="#4facfe"/>
-                                <stop offset="70%" stop-color="#001f3f"/>
-                                <stop offset="100%" stop-color="#020208"/>
-                            </radialGradient>
-                        </defs>
-                        <circle cx="50" cy="50" r="45" fill="url(#earthGlow)"/>
-                        <path d="M25 40 Q 35 30 45 45 T 70 35 T 80 60 Q 60 75 40 60 Z" fill="rgba(72,187,120,0.5)"/>
-                        <path d="M30 65 Q 45 55 50 70 T 75 75" fill="none" stroke="rgba(72,187,120,0.4)" stroke-width="8" stroke-linecap="round"/>
-                        <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-                    </svg>
-                </div>
+                <img class="card-bg-img" src="data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='400' height='380' viewBox='0 0 400 380'><defs><radialGradient id='eg' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='%234facfe'/><stop offset='70%' stop-color='%23001f3f'/><stop offset='100%' stop-color='%23020208'/></radialGradient></defs><rect width='100%' height='100%' fill='%2303030c'/><circle cx='200' cy='190' r='120' fill='url(%23eg)'/><path d='M140 140 Q180 120 220 150 T300 160 Q260 240 200 260 Z' fill='%2348bb78' opacity='0.4'/></svg>" alt="Earth Album">
                 <div class="card-overlay">
                     <h2>Earth Album</h2>
                     <p>Symphony of the Anthropocene</p>
@@ -44,25 +29,7 @@
             </div>
 
             <div class="card" onclick="selectAlbum('space')">
-                <div class="vector-art-frame">
-                    <!-- Procedural Vector Galaxy Space Artwork Layer -->
-                    <svg viewBox="0 0 100 100" xmlns="http://w3.org">
-                        <defs>
-                            <radialGradient id="spaceCore" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="#ffffff"/>
-                                <stop offset="30%" stop-color="#b927fc"/>
-                                <stop offset="70%" stop-color="#2e0854"/>
-                                <stop offset="100%" stop-color="transparent"/>
-                            </radialGradient>
-                        </defs>
-                        <rect width="100" height="100" fill="#020208"/>
-                        <circle cx="50" cy="50" r="45" fill="url(#spaceCore)"/>
-                        <!-- Galactic Spiral Arm Dust Structures -->
-                        <path d="M 50 50 Q 65 40 80 50 T 95 75" fill="none" stroke="rgba(0,242,254,0.4)" stroke-width="3" stroke-linecap="round"/>
-                        <path d="M 50 50 Q 35 60 20 50 T 5 25" fill="none" stroke="rgba(0,242,254,0.4)" stroke-width="3" stroke-linecap="round"/>
-                        <circle cx="35" cy="25" r="1" fill="#fff"/><circle cx="75" cy="30" r="1" fill="#fff"/><circle cx="65" cy="80" r="1" fill="#fff"/>
-                    </svg>
-                </div>
+                <img class="card-bg-img" src="data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='400' height='380' viewBox='0 0 400 380'><defs><radialGradient id='sg' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='40%' stop-color='%23b927fc'/><stop offset='100%' stop-color='%2303030c'/></radialGradient></defs><rect width='100%' height='100%' fill='%2303030c'/><circle cx='200' cy='190' r='130' fill='url(%23sg)' opacity='0.6'/><circle cx='120' cy='100' r='2' fill='%23fff'/><circle cx='280' cy='250' r='3' fill='%23fff'/><circle cx='90' cy='280' r='1.5' fill='%23fff'/></svg>" alt="Space Album">
                 <div class="card-overlay">
                     <h2>Space Album</h2>
                     <p>Orchestrating Exoplanet Transits & Luminosity</p>
@@ -71,7 +38,7 @@
             </div>
         </section>
 
-        <!-- Dynamic Content Console Workspace Panel -->
+        <!-- Main Workspace Frame -->
         <section id="workspace-panel" class="workspace hidden">
             <button class="btn-back" onclick="goBackToAlbums()">← Back to Albums</button>
             
@@ -93,11 +60,9 @@
                     <div id="playback-controls" class="hidden">
                         <h4 id="active-region-title">Active Stream: None</h4>
                         
-                        <!-- Fixed Visual Telemetry Frame Panel -->
-                        <div class="visual-telemetry-box" id="vector-container-frame">
-                            <!-- SVG layers are dynamically injected inside this portal frame by app.js -->
-                            <div id="dynamic-svg-viewport"></div>
-                            <!-- Hyper-focused single tracking point node requested -->
+                        <!-- Fixed Visual Telemetry Frame Container -->
+                        <div class="visual-telemetry-box">
+                            <img id="target-display-img" src="" alt="Active Target Panel">
                             <div id="red-dot-tracker" class="red-tracker-dot"></div>
                             <div id="region-overlay-label">TELEMETRY TRACKER: ACTIVE</div>
                         </div>
