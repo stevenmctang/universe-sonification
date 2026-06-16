@@ -1,4 +1,4 @@
-<!-- Replace your index.html file with this version to add the scanning viewport -->
+<!-- Save this over your current index.html file -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +46,6 @@
                     <div class="region-buttons" id="dynamic-buttons"></div>
                 </div>
 
-                <!-- Upgraded Spatial Telemetry Instrumentation Panel -->
                 <div class="audio-engine-panel">
                     <div id="status-display">
                         <div class="idle-state">
@@ -58,12 +57,10 @@
                     <div id="playback-controls" class="hidden">
                         <h4 id="active-region-title">Active Stream: None</h4>
                         
-                        <!-- Visual Telemetry Scanning Viewport -->
+                        <!-- Upgraded 3D Canvas Viewport Frame -->
                         <div class="visual-telemetry-box">
-                            <img id="target-map-img" src="" alt="Data Scan Feed Target">
-                            <div id="scanner-laser" class="laser-line"></div>
-                            <div id="orbit-tracker" class="orbit-dot hidden"></div>
-                            <div id="region-overlay-label">DATA STREAM SECTOR: IDLE</div>
+                            <canvas id="telemetry-canvas" width="380" height="220"></canvas>
+                            <div id="region-overlay-label">TELEMETRY TRACKER: ACTIVE</div>
                         </div>
 
                         <div class="waveform-container">
@@ -87,3 +84,4 @@
     <script src="app.js"></script>
 </body>
 </html>
+
