@@ -75,12 +75,13 @@ header h1 {
     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s;
 }
 
+/* Premium High-Definition Themed Background Overlays */
 .earth-card { 
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://unsplash.com') no-repeat center center/cover; 
+    background: linear-gradient(rgba(0,0,0,0.2), rgba(3,3,12,0.9)), url('https://unsplash.com') no-repeat center center/cover; 
 }
 
 .space-card { 
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://unsplash.com') no-repeat center center/cover; 
+    background: linear-gradient(rgba(0,0,0,0.2), rgba(3,3,12,0.9)), url('https://unsplash.com') no-repeat center center/cover; 
 }
 
 .card:hover { 
@@ -94,7 +95,6 @@ header h1 {
     bottom: 0; 
     width: 100%; 
     padding: 2rem; 
-    background: linear-gradient(transparent, rgba(3, 3, 12, 0.95)); 
 }
 
 .card h2 { 
@@ -198,7 +198,6 @@ header h1 {
 .idle-state h4 { color: #718096; margin-top: 1rem; }
 .pulse-icon { font-size: 3rem; display: inline-block; animation: float 3s ease-in-out infinite; }
 
-/* Graphics Layout Box Frame Rules */
 .visual-telemetry-box { 
     width: 100%; 
     max-width: 380px; 
@@ -245,4 +244,3 @@ footer { text-align: center; color: #4a5568; padding: 4rem 1rem; font-size: 0.85
 
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 @keyframes bounce { 100% { height: 60px; } }
-

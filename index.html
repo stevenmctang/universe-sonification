@@ -1,4 +1,3 @@
-<!-- Save this over your current index.html file -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +17,7 @@
     </header>
 
     <main class="container">
+        <!-- Upgraded Themed Album Selection State Links -->
         <section id="album-selection" class="card-grid">
             <div class="card earth-card" onclick="selectAlbum('earth')">
                 <div class="card-overlay">
@@ -36,6 +36,7 @@
             </div>
         </section>
 
+        <!-- Shared Workspace Panel Console -->
         <section id="workspace-panel" class="workspace hidden">
             <button class="btn-back" onclick="goBackToAlbums()">← Back to Albums</button>
             
@@ -57,7 +58,6 @@
                     <div id="playback-controls" class="hidden">
                         <h4 id="active-region-title">Active Stream: None</h4>
                         
-                        <!-- Upgraded 3D Canvas Viewport Frame -->
                         <div class="visual-telemetry-box">
                             <canvas id="telemetry-canvas" width="380" height="220"></canvas>
                             <div id="region-overlay-label">TELEMETRY TRACKER: ACTIVE</div>

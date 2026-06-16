@@ -92,7 +92,7 @@ function sonifyTarget(targetName) {
     }, 400);
 }
 
-function draw3DScene(album, target, progress) {
+function draw3DScene(album, target, progress, syncedLuminosity, syncedRadius) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     ctx.fillStyle = "rgba(255,255,255,0.05)";
@@ -124,12 +124,6 @@ function draw3DScene(album, target, progress) {
         ctx.arc(cx + radius/3 - rotX, cy + 15, 20, 0, Math.PI*2);
         ctx.fill();
 
-        ctx.strokeStyle = "rgba(255,255,255,0.15)";
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius + 2, 0, Math.PI*2);
-        ctx.stroke();
-
         let laserY = cy - radius + ((progress * 4) % (radius * 2));
         ctx.strokeStyle = "#00f2fe";
         ctx.shadowColor = "#00f2fe";
@@ -153,11 +147,11 @@ function draw3DScene(album, target, progress) {
         let grad = ctx.createRadialGradient(cx, cy, 2, cx, cy, radius + 20);
         grad.addColorStop(0, '#fffdf0');
         grad.addColorStop(0.3, '#ffb900'); 
-        grad.addColorStop(0.7, 'rgba(255,69,0,0.2)');
+        grad.addColorStop(0.7, `rgba(255,69,0,${syncedLuminosity * 0.2})`);
         grad.addColorStop(1, 'transparent');
 
         ctx.beginPath();
-        ctx.arc(cx, cy, radius + 20, 0, Math.PI*2);
+        ctx.arc(cx, cy, radius + 20, 0, Math.PI * 2);
         ctx.fillStyle = grad;
         ctx.fill();
 
@@ -173,7 +167,7 @@ function draw3DScene(album, target, progress) {
 
         ctx.fillStyle = "#3399ff";
         ctx.beginPath();
-        ctx.arc(px, py, 8, 0, Math.PI*2);
+        ctx.arc(px, py, 8, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.strokeStyle = "#b927fc";
@@ -199,7 +193,7 @@ function draw3DScene(album, target, progress) {
         grad.addColorStop(1, 'transparent');
         ctx.fillStyle = grad;
         ctx.beginPath();
-        ctx.arc(0, 0, 80, 0, Math.PI*2);
+        ctx.arc(0, 0, 80, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.fillStyle = "rgba(0, 242, 254, 0.6)";
@@ -213,14 +207,16 @@ function draw3DScene(album, target, progress) {
         }
         ctx.restore();
 
-        let pulseRadius = 30 + Math.abs(Math.sin(progress * 0.2) * 50);
-        ctx.strokeStyle = "rgba(0, 242, 254, 0.5)";
-        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = "rgba(0, 242, 254, 0.6)";
+        ctx.shadowColor = "#00f2fe";
+        ctx.shadowBlur = 8;
+        ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.arc(cx, cy, pulseRadius, 0, Math.PI*2);
+        ctx.arc(cx, cy, syncedRadius, 0, Math.PI * 2);
         ctx.stroke();
+        ctx.shadowBlur = 0;
         
-        overlayLabel.innerText = `RADAR LOCK RADIAL: R-${pulseRadius.toFixed(0)}px`;
+        overlayLabel.innerText = `RADAR LOCK RADIAL: R-${syncedRadius.toFixed(0)}px`;
     }
 }
 
@@ -233,11 +229,13 @@ function runEarthLogic(tick, region) {
     let index = Math.floor(((anomaly + 0.5) / 3.0) * scalePool.length);
     index = Math.max(0, Math.min(index, scalePool.length - 1));
     
-    draw3DScene('earth', region, tick);
+    draw3DScene('earth', region, tick, 1.0, 0);
 
     dataLog.innerText = `[Timeline: Year ${years}]\nGeospatial Metric: +${anomaly.toFixed(3)}°C Anomaly\nStatus: Tracking surface warming data arrays.\nMapped Output Note: ${scalePool[index]} Hz`;
     playSynth(scalePool[index], 'triangle', 0.25);
 }
+
+let staticRadius = 40;
 
 function runSpaceLogic(tick, celestialObject) {
     let luminosity = 1.0; 
@@ -246,28 +244,32 @@ function runSpaceLogic(tick, celestialObject) {
 
     if (celestialObject.includes("System")) {
         let angle = (tick * 0.15);
-        let px = (canvas.width/2) + Math.cos(angle) * 110;
-        const isTransit = (px > canvas.width/2 - 25 && px < canvas.width/2 + 25 && Math.sin(angle) < 0);
+        let px = (canvas.width / 2) + Math.cos(angle) * 110;
+        const isTransit = (px > canvas.width / 2 - 25 && px < canvas.width / 2 + 25 && Math.sin(angle) < 0);
         
         if (isTransit) {
-            luminosity = 0.55 - (Math.random() * 0.04);
+            luminosity = 0.55; 
             waveType = 'sawtooth';
             statusText = `⚠️ TRANSIT DEVIATION: Planet occluding stellar flux matrix profile!`;
         } else {
-            luminosity = 1.0 + (Math.random() * 0.02 - 0.01);
+            luminosity = 1.0;
             statusText = `Telemetry: Stellar luminosity flux index tracking nominal.`;
         }
     } else {
-        luminosity = 0.8 + Math.sin(tick * 0.4) * 0.3 + (Math.random() * 0.05);
+        const waveLoopFactor = 0.8 + Math.sin(tick * 0.4) * 0.3; 
+        luminosity = waveLoopFactor;
         statusText = `Spectral Analysis: Tracking multi-band interstellar baseline radiation loops.`;
     }
 
     let index = Math.floor(luminosity * (scalePool.length / 2) + 3);
     index = Math.max(0, Math.min(index, scalePool.length - 1));
     const frequency = scalePool[index];
-
-    draw3DScene('space', celestialObject, tick);
-
+    
+    // Compute locked alignment coordinates
+    staticRadius = 30 + ((luminosity - 0.5) / 0.6) * 70;
+    
+    draw3DScene('space', celestialObject, tick, luminosity, staticRadius);
+    
     dataLog.innerText = `[Sample Quantum Node Index: ${tick}]\nRelative Radiance Flux: ${luminosity.toFixed(4)} L☉\n${statusText}\nMapped Output Note: ${frequency} Hz`;
     playSynth(frequency, waveType, 0.3);
 }
@@ -279,25 +281,32 @@ function playSynth(freq, type, duration) {
     const delayNode = audioCtx.createDelay(1.0);
     const feedbackNode = audioCtx.createGain();
     const filterNode = audioCtx.createBiquadFilter();
+    
     osc.type = type;
     osc.frequency.value = freq;
+    
     delayNode.delayTime.value = 0.28;
     feedbackNode.gain.value = 0.42;
     filterNode.type = 'lowpass';
     filterNode.frequency.value = 1350;
+    
     gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
     gainNode.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.04);
     gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    
     osc.connect(gainNode);
     gainNode.connect(filterNode);
     filterNode.connect(audioCtx.destination);
+    
     filterNode.connect(delayNode);
     delayNode.connect(feedbackNode);
     feedbackNode.connect(delayNode);
     delayNode.connect(audioCtx.destination);
+    
     osc.start();
     osc.stop(audioCtx.currentTime + duration + 0.1);
 }
+
 function togglePlayback() {
     if (isPlaying) {
         stopAudioEngine();
@@ -308,6 +317,7 @@ function togglePlayback() {
         if (activeTarget) sonifyTarget(activeTarget);
     }
 }
+
 function stopAudioEngine() {
     isPlaying = false;
     if (currentInterval) {
