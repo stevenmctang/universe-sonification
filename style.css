@@ -257,3 +257,72 @@ footer {
 @keyframes bounce {
     100% { height: 60px; }
 }
+/* Paste these block rules onto the bottom of your style.css file */
+
+.visual-telemetry-box {
+    width: 100%;
+    max-width: 380px;
+    height: 220px;
+    margin: 1.2rem auto;
+    border-radius: 8px;
+    border: 2px solid var(--glass-border);
+    position: relative;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.visual-telemetry-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.75;
+}
+
+/* Linear scanning bar tracking matrix coordinates */
+.laser-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, var(--neon-blue), transparent);
+    box-shadow: 0 0 12px var(--neon-blue);
+    pointer-events: none;
+    transition: top 0.35s linear;
+}
+
+/* Red orbiting node tracking exoplanet transits */
+.orbit-dot {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background-color: #ff3333;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #ff3333, 0 0 5px #fff;
+    pointer-events: none;
+    top: 50%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+    transition: left 0.35s linear, opacity 0.2s;
+}
+
+#region-overlay-label {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--glass-border);
+    padding: 0.25rem 0.6rem;
+    font-family: monospace;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+/* Space Theme Custom CSS Adaptations */
+.workspace.space-theme .laser-line {
+    background: linear-gradient(to right, transparent, var(--neon-purple), transparent);
+    box-shadow: 0 0 12px var(--neon-purple);
+}
+

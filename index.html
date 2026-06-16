@@ -1,3 +1,4 @@
+<!-- Replace your index.html file with this version to add the scanning viewport -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,6 @@
 </head>
 <body>
 
-    <!-- Space Background Canvas overlay -->
     <div class="stars"></div>
     <div class="twinkling"></div>
 
@@ -18,7 +18,6 @@
     </header>
 
     <main class="container">
-        <!-- Unified Album Selection State -->
         <section id="album-selection" class="card-grid">
             <div class="card earth-card" onclick="selectAlbum('earth')">
                 <div class="card-overlay">
@@ -37,7 +36,6 @@
             </div>
         </section>
 
-        <!-- Dynamic Workspace Panel (Shared dynamically by both albums) -->
         <section id="workspace-panel" class="workspace hidden">
             <button class="btn-back" onclick="goBackToAlbums()">← Back to Albums</button>
             
@@ -45,11 +43,10 @@
                 <div class="region-selector">
                     <h3 id="workspace-title">Select an Area</h3>
                     <p class="instruction-text" id="workspace-instruction">Click a target zone to map telemetry strings directly to real-time audio oscillators.</p>
-                    
-                    <!-- Buttons are dynamically injected here by app.js -->
                     <div class="region-buttons" id="dynamic-buttons"></div>
                 </div>
 
+                <!-- Upgraded Spatial Telemetry Instrumentation Panel -->
                 <div class="audio-engine-panel">
                     <div id="status-display">
                         <div class="idle-state">
@@ -58,9 +55,17 @@
                         </div>
                     </div>
                     
-                    <!-- Dynamic Web Audio Console -->
                     <div id="playback-controls" class="hidden">
                         <h4 id="active-region-title">Active Stream: None</h4>
+                        
+                        <!-- Visual Telemetry Scanning Viewport -->
+                        <div class="visual-telemetry-box">
+                            <img id="target-map-img" src="" alt="Data Scan Feed Target">
+                            <div id="scanner-laser" class="laser-line"></div>
+                            <div id="orbit-tracker" class="orbit-dot hidden"></div>
+                            <div id="region-overlay-label">DATA STREAM SECTOR: IDLE</div>
+                        </div>
+
                         <div class="waveform-container">
                             <div class="bar animate-bar"></div>
                             <div class="bar animate-bar"></div>

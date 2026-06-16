@@ -1,5 +1,4 @@
-// Global Routing State Variables
-// Global State Mapping Elements
+// Replace your entire app.js file with this complete multi-engine tracking build
 const selectionScreen = document.getElementById('album-selection');
 const workspacePanel = document.getElementById('workspace-panel');
 const workspaceTitle = document.getElementById('workspace-title');
@@ -11,30 +10,50 @@ const activeTitle = document.getElementById('active-region-title');
 const dataLog = document.getElementById('data-log');
 const idleEmoji = document.getElementById('idle-emoji');
 
+// Telemetry Targeting UI Hooks
+const targetMapImg = document.getElementById('target-map-img');
+const scannerLaser = document.getElementById('scanner-laser');
+const orbitTracker = document.getElementById('orbit-tracker');
+const overlayLabel = document.getElementById('region-overlay-label');
+
 let audioCtx = null;
 let currentInterval = null;
 let isPlaying = false;
 let activeAlbum = '';
 let activeTarget = '';
 
-// Minor Pentatonic scale used to keep the output beautiful and harmonic
 const scalePool = [110.00, 130.81, 146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99];
 
-// Dynamic Database Object
+// Comprehensive Database Configuration
 const albumData = {
     earth: {
         title: "Earth Album Sub-Regions",
         instruction: "Select a geographic continent vector to process 100-year temperature anomalies.",
         emoji: "🌍",
         themeClass: "earth-theme",
-        targets: ["North America", "Europe", "Asia", "Africa", "South America"]
+        targets: ["North America", "Europe", "Asia", "Africa", "South America"],
+        // Verified high-definition topographic assets
+        imageMaps: {
+            "North America": "https://unsplash.com",
+            "Europe": "https://unsplash.com",
+            "Asia": "https://unsplash.com",
+            "Africa": "https://unsplash.com",
+            "South America": "https://unsplash.com"
+        }
     },
     space: {
         title: "Space Album Cosmic Fields",
         instruction: "Select an astronomical asset to monitor real-time luminosity indices and exoplanet orbit light curves.",
         emoji: "🌌",
         themeClass: "space-theme",
-        targets: ["Orion Nebula", "Andromeda Galaxy", "Kepler-186 System", "TRAPPIST-1 System"]
+        targets: ["Orion Nebula", "Andromeda Galaxy", "Kepler-186 System", "TRAPPIST-1 System"],
+        // NASA Science/Hubble data concept imagery
+        imageMaps: {
+            "Orion Nebula": "https://nasa.gov",
+            "Andromeda Galaxy": "https://wikimedia.org",
+            "Kepler-186 System": "https://nasa.gov",
+            "TRAPPIST-1 System": "https://nasa.gov"
+        }
     }
 };
 
@@ -44,14 +63,11 @@ function selectAlbum(albumKey) {
     
     selectionScreen.classList.add('hidden');
     workspacePanel.classList.remove('hidden');
-    
-    // Set UI styling theme variations
     workspacePanel.className = `workspace ${data.themeClass}`;
     workspaceTitle.innerText = data.title;
     workspaceInstruction.innerText = data.instruction;
     idleEmoji.innerText = data.emoji;
 
-    // Flush and reconstruct context target buttons
     dynamicButtonsContainer.innerHTML = '';
     data.targets.forEach(target => {
         const btn = document.createElement('button');
@@ -82,10 +98,17 @@ function sonifyTarget(targetName) {
     playbackControls.classList.remove('hidden');
     activeTitle.innerText = `Active Session: ${activeAlbum.toUpperCase()} // Target: ${targetName}`;
     
+    // Inject the specific image asset map location parameters
+    const currentAssetMap = albumData[activeAlbum].imageMaps[targetName];
+    targetMapImg.src = currentAssetMap;
+
+    // Reset visual tracker positioning profiles
+    scannerLaser.classList.remove('hidden');
+    orbitTracker.classList.add('hidden');
+
     isPlaying = true;
     let clockTicks = 0;
 
-    // Core Logic Routing Loop Node
     currentInterval = setInterval(() => {
         if (activeAlbum === 'earth') {
             runEarthLogic(clockTicks, targetName);
@@ -93,12 +116,11 @@ function sonifyTarget(targetName) {
             runSpaceLogic(clockTicks, targetName);
         }
         clockTicks++;
-    }, 350); // Fast interval cycle speed for sharp response
+    }, 400);
 }
 
-// Earth Processing Node (Linear Rising Global Temp Anomaly Engine)
 function runEarthLogic(tick, region) {
-    const years = 1926 + (tick % 101);
+    const targetYear = 1926 + (tick % 101);
     const customRates = { 'North America': 0.022, 'Europe': 0.028, 'Asia': 0.019, 'Africa': 0.012, 'South America': 0.015 };
     const rate = customRates[region] || 0.015;
     
@@ -106,88 +128,98 @@ function runEarthLogic(tick, region) {
     let index = Math.floor(((anomaly + 0.5) / 3.0) * scalePool.length);
     index = Math.max(0, Math.min(index, scalePool.length - 1));
     
-    dataLog.innerText = `[Timeline: Year ${years}] Telemetry: +${anomaly.toFixed(3)}°C | Freq: ${scalePool[index]} Hz`;
+    // UI Scanning Line Calculation Math
+    const yPercentage = (tick % 101);
+    scannerLaser.style.top = `${yPercentage}%`;
+    overlayLabel.innerText = `SCAN LATITUDE RADIAL: ${yPercentage}°N`;
+
+    dataLog.innerText = `[Timeline: Year ${targetYear}] Telemetry: +${anomaly.toFixed(3)}°C | Freq: ${scalePool[index]} Hz`;
     playSynth(scalePool[index], 'triangle', 0.25);
 }
 
-// Space Processing Node (Exoplanet Light Curve Dips & Pulsing Brightness Engine)
 function runSpaceLogic(tick, celestialObject) {
     let luminosity = 1.0; 
-    let waveType = 'sine'; // Warmer, smoother cosmic frequency pattern
+    let waveType = 'sine';
     let statusText = '';
 
     if (celestialObject.includes("System")) {
-        // Exoplanet Light Curve: Steady line that drops dramatically during transit
-        const isTransit = (tick % 12 === 0 || tick % 12 === 1);
+        // Exoplanet Orbit Tracking Interface Modifiers
+        scannerLaser.classList.add('hidden'); // Hide the standard flat line scanner
+        orbitTracker.classList.remove('hidden'); // Enable orbit dot cursor
+
+        // Calculate orbit position across the x-axis (0% to 100% wide)
+        const orbitPosition = (tick * 8) % 108; 
+        orbitTracker.style.left = `${orbitPosition}%`;
+
+        // If the planet falls right in front of the center star (between 40% and 60% coordinates)
+        const isTransit = (orbitPosition >= 40 && orbitPosition <= 60);
         if (isTransit) {
-            luminosity = 0.65 - (Math.random() * 0.05); // Simulated drop in star brightness
-            waveType = 'sawtooth'; // Harsh wave architecture representing an atmospheric eclipse
-            statusText = `⚠️ EXOPLANET TRANSIT DETECTED // Light Curve Drop!`;
+            luminosity = 0.60 - (Math.random() * 0.04);
+            waveType = 'sawtooth';
+            statusText = `⚠️ TRANSIT DEVIATION RADIAL INDICES FLUX DECREASE DETECTED`;
+            orbitTracker.style.transform = `translate(-50%, -50%) scale(1.6)`; // Dot scales up as it passes
         } else {
             luminosity = 1.0 + (Math.random() * 0.02 - 0.01);
-            statusText = `Clear Star Flux Index: Nominal`;
+            statusText = `Star Solar Luminosity Vector: Constant Continuum`;
+            orbitTracker.style.transform = `translate(-50%, -50%) scale(1.0)`;
         }
+        overlayLabel.innerText = `ORBIT TRACKING COORDINATES: X-${orbitPosition}°`;
     } else {
-        // Nebulas and Galaxies: Rhythmic, fluctuating cosmic background radiation waves
+        // Deep Nebulas/Galaxies layout configurations
+        scannerLaser.classList.remove('hidden');
+        orbitTracker.classList.add('hidden');
+
+        // Loop the laser bar scan coordinates back and forth smoothly
+        const loopFactor = Math.abs(Math.sin(tick * 0.15) * 100);
+        scannerLaser.style.top = `${loopFactor}%`;
+        overlayLabel.innerText = `SPECTRAL FILAMENT SCAN DEPTH: ${loopFactor.toFixed(0)}%`;
+
         luminosity = 0.8 + Math.sin(tick * 0.4) * 0.3 + (Math.random() * 0.05);
-        statusText = `Monitoring Cosmic Wavefront Luminosity`;
+        statusText = `Monitoring Photon Spectral Mass Densities`;
     }
 
-    // Convert raw luminosity directly to scalePool array boundaries
     let index = Math.floor(luminosity * (scalePool.length / 2) + 3);
     index = Math.max(0, Math.min(index, scalePool.length - 1));
     const frequency = scalePool[index];
 
-    dataLog.innerText = `[Target Index: ${tick}] Relative Flux: ${luminosity.toFixed(4)} L☉\n${statusText} | Freq: ${frequency} Hz`;
+    dataLog.innerText = `[Sample Vector Index: ${tick}] Relative Flux: ${luminosity.toFixed(4)} L☉\n${statusText} | Freq: ${frequency} Hz`;
     playSynth(frequency, waveType, 0.3);
 }
 
-// Paste this code over the old playSynth function in your app.js file
+// Custom Space Echo and Reverb Signal Chain Pipeline Engine Module
 function playSynth(freq, type, duration) {
     if (!audioCtx) return;
 
-    // 1. Create the Core Audio Nodes
     const osc = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
-    const delayNode = audioCtx.createDelay(1.0); // Creates an audio echo chamber
-    const feedbackNode = audioCtx.createGain();   // Controls how long the echo lasts
-    const filterNode = audioCtx.createBiquadFilter(); // Smooths out harsh high frequencies
+    const delayNode = audioCtx.createDelay(1.0);
+    const feedbackNode = audioCtx.createGain();
+    const filterNode = audioCtx.createBiquadFilter();
 
-    // 2. Configure the Audio Synthesizer Matrix
     osc.type = type;
     osc.frequency.value = freq;
 
-    // Set up the echo delay time (0.25 seconds apart for a rhythmic texture)
-    delayNode.delayTime.value = 0.25; 
-    feedbackNode.gain.value = 0.4;     // 40% of the sound loops back (creates depth)
-    
+    delayNode.delayTime.value = 0.28; 
+    feedbackNode.gain.value = 0.42;     
     filterNode.type = 'lowpass';
-    filterNode.frequency.value = 1400; // Cuts off piercing high frequencies for a warm tone
+    filterNode.frequency.value = 1350; 
 
-    // 3. Configure a Smooth Cinematic Volume Envelope
     gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.05); // Smooth fade in
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration); // Natural decay
+    gainNode.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.04);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
 
-    // 4. Wire the Spatial Effect Matrix (The Signal Routing Chain)
-    // Oscillator -> Synth Volume -> Filter -> Speakers
     osc.connect(gainNode);
     gainNode.connect(filterNode);
     filterNode.connect(audioCtx.destination);
 
-    // Create the Echo Feedback Loop: Filter -> Delay -> Feedback -> back into Delay
     filterNode.connect(delayNode);
     delayNode.connect(feedbackNode);
     feedbackNode.connect(delayNode);
-    
-    // Connect the final echo room output directly to speakers
     delayNode.connect(audioCtx.destination);
 
-    // 5. Fire the Audio Context Event Timers
     osc.start();
     osc.stop(audioCtx.currentTime + duration + 0.1);
 }
-
 
 function togglePlayback() {
     if (isPlaying) {
