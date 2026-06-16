@@ -3,6 +3,7 @@
     --space-bg: #03030c;
     --neon-blue: #00f2fe;
     --neon-green: #4facfe;
+    --neon-purple: #b927fc;
     --text-glow: 0 0 10px rgba(0, 242, 254, 0.6);
     --glass-bg: rgba(15, 15, 35, 0.7);
     --glass-border: rgba(0, 242, 254, 0.2);
@@ -23,7 +24,6 @@ body {
     position: relative;
 }
 
-/* Starfield Background Effects */
 .stars {
     background: #000 url('https://amazonaws.com') repeat top center;
     z-index: -2;
@@ -60,7 +60,6 @@ header h1 {
     padding: 2rem 1rem;
 }
 
-/* Album Grid */
 .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -82,10 +81,10 @@ header h1 {
 }
 
 .space-card {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://unsplash.com') no-repeat center center/cover;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://unsplash.com') no-repeat center center/cover;
 }
 
-.card:hover:not(.locked) {
+.card:hover {
     transform: translateY(-8px);
     box-shadow: 0 12px 30px rgba(0, 242, 254, 0.3);
     border-color: var(--neon-blue);
@@ -115,18 +114,6 @@ header h1 {
     color: var(--neon-blue);
 }
 
-.locked {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.lock-badge {
-    border-color: #718096;
-    color: #718096;
-    background: transparent;
-}
-
-/* Interactive Workspace Section */
 .hidden { display: none !important; }
 
 .workspace {
@@ -135,6 +122,21 @@ header h1 {
     border-radius: 16px;
     border: 1px solid var(--glass-border);
     padding: 2.5rem;
+}
+
+/* Dynamic Purple Space Theme Modifiers */
+.workspace.space-theme {
+    border-color: var(--neon-purple);
+    box-shadow: inset 0 0 20px rgba(185, 39, 252, 0.1);
+}
+
+.workspace.space-theme .btn-region:hover {
+    background: rgba(185, 39, 252, 0.08);
+    border-color: var(--neon-purple);
+}
+
+.workspace.space-theme .bar {
+    background-color: var(--neon-purple);
 }
 
 .btn-back {
@@ -183,7 +185,6 @@ header h1 {
     border-color: var(--neon-blue);
 }
 
-/* Audio Player Console Panel */
 .audio-engine-panel {
     background: rgba(0, 0, 0, 0.4);
     border-radius: 12px;
@@ -198,7 +199,6 @@ header h1 {
 .idle-state h4 { color: #718096; margin-top: 1rem; }
 .pulse-icon { font-size: 3rem; display: inline-block; animation: float 3s ease-in-out infinite; }
 
-/* Visualizer Bars */
 .waveform-container {
     display: flex;
     justify-content: center;

@@ -1,139 +1,173 @@
 // Global Routing State Variables
+// Global State Mapping Elements
 const selectionScreen = document.getElementById('album-selection');
-const earthWorkspace = document.getElementById('earth-workspace');
+const workspacePanel = document.getElementById('workspace-panel');
+const workspaceTitle = document.getElementById('workspace-title');
+const workspaceInstruction = document.getElementById('workspace-instruction');
+const dynamicButtonsContainer = document.getElementById('dynamic-buttons');
 const statusDisplay = document.getElementById('status-display');
 const playbackControls = document.getElementById('playback-controls');
 const activeTitle = document.getElementById('active-region-title');
 const dataLog = document.getElementById('data-log');
+const idleEmoji = document.getElementById('idle-emoji');
 
-// Web Audio API Variables
 let audioCtx = null;
 let currentInterval = null;
 let isPlaying = false;
+let activeAlbum = '';
+let activeTarget = '';
 
-// An Pentatonic Musical Scale Pool mapping to specific frequencies (Hz)
-// Keeps the generated data sonification sounding beautifully melodic (cinematic)
-const scalePool = [
-    110.00, // A2
-    130.81, // C3
-    146.83, // D3
-    164.81, // E3
-    196.00, // G3
-    220.00, // A3
-    261.63, // C4
-    293.66, // D4
-    329.63, // E4
-    392.00, // G4
-    440.00, // A4
-    523.25, // C5
-    587.33, // D5
-    659.25, // E5
-    783.99  // G5
-];
+// Minor Pentatonic scale used to keep the output beautiful and harmonic
+const scalePool = [110.00, 130.81, 146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99];
 
-function selectAlbum(album) {
-    if (album === 'earth') {
-        selectionScreen.classList.add('hidden');
-        earthWorkspace.classList.remove('hidden');
+// Dynamic Database Object
+const albumData = {
+    earth: {
+        title: "Earth Album Sub-Regions",
+        instruction: "Select a geographic continent vector to process 100-year temperature anomalies.",
+        emoji: "🌍",
+        themeClass: "earth-theme",
+        targets: ["North America", "Europe", "Asia", "Africa", "South America"]
+    },
+    space: {
+        title: "Space Album Cosmic Fields",
+        instruction: "Select an astronomical asset to monitor real-time luminosity indices and exoplanet orbit light curves.",
+        emoji: "🌌",
+        themeClass: "space-theme",
+        targets: ["Orion Nebula", "Andromeda Galaxy", "Kepler-186 System", "TRAPPIST-1 System"]
     }
+};
+
+function selectAlbum(albumKey) {
+    activeAlbum = albumKey;
+    const data = albumData[albumKey];
+    
+    selectionScreen.classList.add('hidden');
+    workspacePanel.classList.remove('hidden');
+    
+    // Set UI styling theme variations
+    workspacePanel.className = `workspace ${data.themeClass}`;
+    workspaceTitle.innerText = data.title;
+    workspaceInstruction.innerText = data.instruction;
+    idleEmoji.innerText = data.emoji;
+
+    // Flush and reconstruct context target buttons
+    dynamicButtonsContainer.innerHTML = '';
+    data.targets.forEach(target => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-region';
+        btn.innerText = target;
+        btn.onclick = () => sonifyTarget(target);
+        dynamicButtonsContainer.appendChild(btn);
+    });
 }
 
 function goBackToAlbums() {
     stopAudioEngine();
-    earthWorkspace.classList.add('hidden');
+    workspacePanel.classList.add('hidden');
     selectionScreen.classList.remove('hidden');
+    statusDisplay.classList.remove('hidden');
+    playbackControls.classList.add('hidden');
 }
 
-// Data Synthesizer Sequence Loop Implementation
-function sonifyRegion(regionName) {
-    stopAudioEngine(); // Clear existing loops before starting a new region
-    
-    // Lazy initialize context to fulfill browser security rules on click
+function sonifyTarget(targetName) {
+    stopAudioEngine();
+    activeTarget = targetName;
+
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
 
     statusDisplay.classList.add('hidden');
     playbackControls.classList.remove('hidden');
-    activeTitle.innerText = `Album: Earth | Track: Data Vector of ${regionName}`;
+    activeTitle.innerText = `Active Session: ${activeAlbum.toUpperCase()} // Target: ${targetName}`;
     
     isPlaying = true;
-    
-    // Simulate raw climate datasets (100 sequential measurement years)
-    let currentYear = 1926;
-    let baselineTemp = 0.0;
-    
-    // Localized climate models per user selection parameter
-    const regionalModifiers = {
-        'North America': 0.022,
-        'Europe': 0.028,
-        'Asia': 0.019,
-        'Africa': 0.012,
-        'South America': 0.015
-    };
-    
-    const warmingRate = regionalModifiers[regionName] || 0.015;
+    let clockTicks = 0;
 
-    // Run clock step loop generating 1 musical note every 400ms
+    // Core Logic Routing Loop Node
     currentInterval = setInterval(() => {
-        if (currentYear > 2026) {
-            currentYear = 1926; // Loop back data tracking loop
-            baselineTemp = 0.0;
+        if (activeAlbum === 'earth') {
+            runEarthLogic(clockTicks, targetName);
+        } else {
+            runSpaceLogic(clockTicks, targetName);
         }
-
-        // Apply global warming vector addition with natural year variations
-        baselineTemp += warmingRate + (Math.random() * 0.1 - 0.045);
-        
-        // Map current calculated value limits directly into our array index scale bounds
-        let index = Math.floor(((baselineTemp + 0.5) / 3.0) * scalePool.length);
-        index = Math.max(0, Math.min(index, scalePool.length - 1));
-        const finalFrequency = scalePool[index];
-
-        // Terminal Console Log tracking inside UI interface component
-        dataLog.innerText = `[Year: ${currentYear}] Raw Anomaly: +${baselineTemp.toFixed(3)}°C | Mapped Pitch Frequency: ${finalFrequency} Hz`;
-
-        // Sound Synthesis Generation Action Node Pipeline
-        playSynthNote(finalFrequency);
-
-        currentYear++;
-    }, 400);
+        clockTicks++;
+    }, 350); // Fast interval cycle speed for sharp response
 }
 
-function playSynthNote(frequency) {
+// Earth Processing Node (Linear Rising Global Temp Anomaly Engine)
+function runEarthLogic(tick, region) {
+    const years = 1926 + (tick % 101);
+    const customRates = { 'North America': 0.022, 'Europe': 0.028, 'Asia': 0.019, 'Africa': 0.012, 'South America': 0.015 };
+    const rate = customRates[region] || 0.015;
+    
+    const anomaly = (tick % 101) * rate + (Math.random() * 0.12 - 0.06);
+    let index = Math.floor(((anomaly + 0.5) / 3.0) * scalePool.length);
+    index = Math.max(0, Math.min(index, scalePool.length - 1));
+    
+    dataLog.innerText = `[Timeline: Year ${years}] Telemetry: +${anomaly.toFixed(3)}°C | Freq: ${scalePool[index]} Hz`;
+    playSynth(scalePool[index], 'triangle', 0.25);
+}
+
+// Space Processing Node (Exoplanet Light Curve Dips & Pulsing Brightness Engine)
+function runSpaceLogic(tick, celestialObject) {
+    let luminosity = 1.0; 
+    let waveType = 'sine'; // Warmer, smoother cosmic frequency pattern
+    let statusText = '';
+
+    if (celestialObject.includes("System")) {
+        // Exoplanet Light Curve: Steady line that drops dramatically during transit
+        const isTransit = (tick % 12 === 0 || tick % 12 === 1);
+        if (isTransit) {
+            luminosity = 0.65 - (Math.random() * 0.05); // Simulated drop in star brightness
+            waveType = 'sawtooth'; // Harsh wave architecture representing an atmospheric eclipse
+            statusText = `⚠️ EXOPLANET TRANSIT DETECTED // Light Curve Drop!`;
+        } else {
+            luminosity = 1.0 + (Math.random() * 0.02 - 0.01);
+            statusText = `Clear Star Flux Index: Nominal`;
+        }
+    } else {
+        // Nebulas and Galaxies: Rhythmic, fluctuating cosmic background radiation waves
+        luminosity = 0.8 + Math.sin(tick * 0.4) * 0.3 + (Math.random() * 0.05);
+        statusText = `Monitoring Cosmic Wavefront Luminosity`;
+    }
+
+    // Convert raw luminosity directly to scalePool array boundaries
+    let index = Math.floor(luminosity * (scalePool.length / 2) + 3);
+    index = Math.max(0, Math.min(index, scalePool.length - 1));
+    const frequency = scalePool[index];
+
+    dataLog.innerText = `[Target Index: ${tick}] Relative Flux: ${luminosity.toFixed(4)} L☉\n${statusText} | Freq: ${frequency} Hz`;
+    playSynth(frequency, waveType, 0.3);
+}
+
+function playSynth(freq, type, duration) {
     if (!audioCtx) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
 
-    // Custom Synthesizer Component Setup
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
 
-    oscillator.type = 'triangle'; // Pure, warm musical tone ideal for tracking signals
-    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(0, audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
 
-    // Smooth ADSR Volume Envelope Automation preventing audio cracks/pops
-    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + 0.05); // Attack phase
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35); // Decay/Sustain
-
-    // Wire component matrices out directly to speakers
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    oscillator.start();
-    oscillator.stop(audioCtx.currentTime + 0.4);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration + 0.05);
 }
 
 function togglePlayback() {
     if (isPlaying) {
         stopAudioEngine();
-        dataLog.innerText = "Audio stream engine manually suspended.";
-        document.getElementById('audio-toggle-btn').innerText = "Restart Data Stream";
-        document.getElementById('audio-toggle-btn').className = "btn-action restart-style";
+        dataLog.innerText = "Audio stream pipeline paused.";
+        document.getElementById('audio-toggle-btn').innerText = "Resume Data Stream";
     } else {
         document.getElementById('audio-toggle-btn').innerText = "Stop Audio Generation";
-        document.getElementById('audio-toggle-btn').className = "btn-action";
-        // Re-read active track context name tracking parameters
-        const match = activeTitle.innerText.match(/Vector of (.*)/);
-        if (match && match[1]) sonifyRegion(match[1]);
+        if (activeTarget) sonifyTarget(activeTarget);
     }
 }
 
