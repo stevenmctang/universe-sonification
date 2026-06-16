@@ -1,0 +1,259 @@
+/* Custom CSS Variables for Cybernetic Earth/Space Vibe */
+:root {
+    --space-bg: #03030c;
+    --neon-blue: #00f2fe;
+    --neon-green: #4facfe;
+    --text-glow: 0 0 10px rgba(0, 242, 254, 0.6);
+    --glass-bg: rgba(15, 15, 35, 0.7);
+    --glass-border: rgba(0, 242, 254, 0.2);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--space-bg);
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Starfield Background Effects */
+.stars {
+    background: #000 url('https://amazonaws.com') repeat top center;
+    z-index: -2;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+header {
+    text-align: center;
+    padding: 3rem 1rem 1.5rem 1rem;
+}
+
+header h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: var(--text-glow);
+}
+
+.subtitle {
+    color: #a0aec0;
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Album Grid */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+}
+
+.card {
+    height: 380px;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid var(--glass-border);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s;
+}
+
+.earth-card {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://unsplash.com') no-repeat center center/cover;
+}
+
+.space-card {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://unsplash.com') no-repeat center center/cover;
+}
+
+.card:hover:not(.locked) {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 242, 254, 0.3);
+    border-color: var(--neon-blue);
+}
+
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 2rem;
+    background: linear-gradient(transparent, rgba(3, 3, 12, 0.95));
+}
+
+.card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.badge {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(0, 242, 254, 0.1);
+    border: 1px solid var(--neon-blue);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--neon-blue);
+}
+
+.locked {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.lock-badge {
+    border-color: #718096;
+    color: #718096;
+    background: transparent;
+}
+
+/* Interactive Workspace Section */
+.hidden { display: none !important; }
+
+.workspace {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    padding: 2.5rem;
+}
+
+.btn-back {
+    background: transparent;
+    border: none;
+    color: #a0aec0;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+}
+
+.btn-back:hover { color: var(--neon-blue); }
+
+.workspace-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+}
+
+@media (max-width: 768px) {
+    .workspace-layout { grid-template-columns: 1fr; }
+}
+
+.region-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-region {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-region:hover {
+    background: rgba(0, 242, 254, 0.08);
+    border-color: var(--neon-blue);
+}
+
+/* Audio Player Console Panel */
+.audio-engine-panel {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    border: 1px dashed rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+}
+
+.idle-state h4 { color: #718096; margin-top: 1rem; }
+.pulse-icon { font-size: 3rem; display: inline-block; animation: float 3s ease-in-out infinite; }
+
+/* Visualizer Bars */
+.waveform-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 60px;
+    gap: 6px;
+    margin: 2rem 0;
+}
+
+.bar {
+    width: 8px;
+    height: 10px;
+    background-color: var(--neon-blue);
+    border-radius: 4px;
+}
+
+.animate-bar { animation: bounce 0.8s ease-in-out infinite alternate; }
+.bar:nth-child(2) { animation-delay: 0.2s; background-color: var(--neon-green); }
+.bar:nth-child(3) { animation-delay: 0.4s; }
+.bar:nth-child(4) { animation-delay: 0.6s; background-color: var(--neon-green); }
+
+.data-stream-log {
+    font-family: monospace;
+    color: #48bb78;
+    background: #000;
+    padding: 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.btn-action {
+    background: linear-gradient(135deg, #e53e3e, #9b2c2c);
+    border: none;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+footer {
+    text-align: center;
+    color: #4a5568;
+    padding: 4rem 1rem;
+    font-size: 0.85rem;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes bounce {
+    100% { height: 60px; }
+}
