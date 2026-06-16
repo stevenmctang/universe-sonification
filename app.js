@@ -142,23 +142,52 @@ function runSpaceLogic(tick, celestialObject) {
     playSynth(frequency, waveType, 0.3);
 }
 
+// Paste this code over the old playSynth function in your app.js file
 function playSynth(freq, type, duration) {
     if (!audioCtx) return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
 
+    // 1. Create the Core Audio Nodes
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    const delayNode = audioCtx.createDelay(1.0); // Creates an audio echo chamber
+    const feedbackNode = audioCtx.createGain();   // Controls how long the echo lasts
+    const filterNode = audioCtx.createBiquadFilter(); // Smooths out harsh high frequencies
+
+    // 2. Configure the Audio Synthesizer Matrix
     osc.type = type;
     osc.frequency.value = freq;
 
-    gain.gain.setValueAtTime(0, audioCtx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.04);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    // Set up the echo delay time (0.25 seconds apart for a rhythmic texture)
+    delayNode.delayTime.value = 0.25; 
+    feedbackNode.gain.value = 0.4;     // 40% of the sound loops back (creates depth)
+    
+    filterNode.type = 'lowpass';
+    filterNode.frequency.value = 1400; // Cuts off piercing high frequencies for a warm tone
 
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
+    // 3. Configure a Smooth Cinematic Volume Envelope
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.05); // Smooth fade in
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration); // Natural decay
+
+    // 4. Wire the Spatial Effect Matrix (The Signal Routing Chain)
+    // Oscillator -> Synth Volume -> Filter -> Speakers
+    osc.connect(gainNode);
+    gainNode.connect(filterNode);
+    filterNode.connect(audioCtx.destination);
+
+    // Create the Echo Feedback Loop: Filter -> Delay -> Feedback -> back into Delay
+    filterNode.connect(delayNode);
+    delayNode.connect(feedbackNode);
+    feedbackNode.connect(delayNode);
+    
+    // Connect the final echo room output directly to speakers
+    delayNode.connect(audioCtx.destination);
+
+    // 5. Fire the Audio Context Event Timers
     osc.start();
-    osc.stop(audioCtx.currentTime + duration + 0.05);
+    osc.stop(audioCtx.currentTime + duration + 0.1);
 }
+
 
 function togglePlayback() {
     if (isPlaying) {
